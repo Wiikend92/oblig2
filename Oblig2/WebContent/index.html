@@ -2,14 +2,22 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Handleliste</title>
+<title>Handleliste login</title>
 </head>
 <body>
-<h1>Min handleliste</h1>
-<form action="handle" method="get">
-<fieldset>
-<p><input type="submit" value="Legg til"/><input type="text" name="vare" /></p>
-</fieldset>
-</form>
+	<h1>Login</h1>
+	<form action="login" method="post">
+		<fieldset>
+			<p>
+				<label for="passwordField">Skriv inn passord:</label>
+			</p>
+			<p>
+				<input id="passwordField" type="password" name="passord" />
+			</p>
+			<p>
+				<input type="submit" value="Login" />
+			</p>
+		</fieldset>
+	</form>
 </body>
 </html>
