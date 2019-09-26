@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 public class Login extends HttpServlet {
 
 	String passord;
+	int timeout;
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,6 +24,7 @@ public class Login extends HttpServlet {
 	public void init() throws ServletException {
 		ServletConfig config = getServletConfig();
 		passord = config.getInitParameter("passord");
+		timeout = Integer.parseInt(config.getInitParameter("timeout"));
 	}
 
 	@Override
@@ -39,21 +41,23 @@ public class Login extends HttpServlet {
 			}
 		}
 
-		if (error != null) {
-			if (error.equals("1")) {
-				writer.println("Passordet du skrev inn var feil. Prøv igjen:");
-			}
-		}
-
 		writer.println("<!DOCTYPE html>\r\n" + "<html>\r\n" + "<head>\r\n" + "<meta charset=\"UTF-8\">\r\n"
 				+ "<title>Handleliste login</title>\r\n" + "</head>\r\n" + "<body>\r\n" + "	<h1>Login</h1>\r\n"
-				+ "	<form action=\"login\" method=\"post\">\r\n" + "		<fieldset>\r\n" + "			<p>\r\n"
-				+ "				<label for=\"passwordField\">Skriv inn passord:</label>\r\n" + "			</p>\r\n"
-				+ "			<p>\r\n"
+				+ "	<form action=\"login\" method=\"post\">\r\n" + " <p>\r\n");
+
+		if (error != null) {
+			if (error.equals("1")) {
+				writer.println("<p style='color:red'>Passordet du skrev inn var feil. Prøv igjen:</p>");
+			}
+		} else {
+			writer.println("				<label for=\"passwordField\">Skriv inn passord:</label>\r\n");
+		}
+
+		writer.println("			</p>\r\n" + "			<p>\r\n"
 				+ "				<input id=\"passwordField\" type=\"password\" name=\"passord\" />\r\n"
 				+ "			</p>\r\n" + "			<p>\r\n"
-				+ "				<input type=\"submit\" value=\"Login\" />\r\n" + "			</p>\r\n"
-				+ "		</fieldset>\r\n" + "	</form>\r\n" + "</body>\r\n" + "</html>");
+				+ "				<input type=\"submit\" value=\"Logg inn\" />\r\n" + "			</p>\r\n"
+				+ "		</form>\r\n" + "</body>\r\n" + "</html>");
 
 	}
 
@@ -85,7 +89,7 @@ public class Login extends HttpServlet {
 		logUt(request, response);
 		HttpSession sesjon = request.getSession(true);
 		sesjon.setAttribute("login", 1);
-		sesjon.setMaxInactiveInterval(30);
+		sesjon.setMaxInactiveInterval(timeout);
 		return;
 	}
 

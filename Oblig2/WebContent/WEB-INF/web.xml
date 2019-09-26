@@ -14,18 +14,11 @@
 			<param-name>passord</param-name>
 			<param-value>pe</param-value>
 		</init-param>
-	</servlet>
-	<servlet>
-		<servlet-name>Handle</servlet-name>
-		<servlet-class>no.hvl.dat108.Handle</servlet-class>
 		<init-param>
-			<param-name>passord</param-name>
-			<param-value>pe</param-value>
+			<param-name>timeout</param-name>
+			<param-value>30</param-value>
 		</init-param>
 	</servlet>
-	<context-param>
-		<param-name>api-key</param-name>
-		<param-value>h6Thd5guE4Kl12g3</param-value>
-	</context-param>
+	
 
 </web-app>
