@@ -30,9 +30,15 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 		PrintWriter writer = response.getWriter();
 		String error = request.getParameter("error");
-		
+		String logout = request.getParameter("logout");
+
 		response.setContentType("text/html; charset=ISO-8859-1");
-		
+		if (logout != null) {
+			if (logout.equals("1")) {
+				logUt(request, response);
+			}
+		}
+
 		if (error != null) {
 			if (error.equals("1")) {
 				writer.println("Passordet du skrev inn var feil. Prøv igjen:");
@@ -64,18 +70,23 @@ public class Login extends HttpServlet {
 		}
 
 	}
-	
-	protected void logUt(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+	protected void logUt(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession sesjon = request.getSession(false);
-		sesjon.invalidate();
+		if (sesjon != null) {
+			sesjon.invalidate();
+		}
+		return;
 	}
 
-
-	protected void logInn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	protected void logInn(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		logUt(request, response);
 		HttpSession sesjon = request.getSession(true);
 		sesjon.setAttribute("login", 1);
-		
+		sesjon.setMaxInactiveInterval(30);
+		return;
 	}
-	
+
 }
