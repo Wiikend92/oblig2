@@ -60,20 +60,21 @@ public class Handle extends HttpServlet {
 			throws ServletException, IOException {
 		checkLogin(request, response);
 
+		HttpSession sesjon = request.getSession(false);
 		String slett = request.getParameter("slett");
 		String vare = request.getParameter("vare");
-		HttpSession sesjon = request.getSession(false);
 
-		if (vare != null) {
-			sesjon.setAttribute(vare, vare);
+		if (sesjon != null) {
+			if (vare != null) {
+				sesjon.setAttribute(vare, vare);
+			}
+
+			if (slett != null) {
+				sesjon.removeAttribute(slett);
+			}
+			response.sendRedirect("handle");
 		}
-
-		if (slett != null) {
-			sesjon.removeAttribute(slett);
-		}
-		// Lagre til fil
-
-		response.sendRedirect("handle");
+		
 	}
 
 	protected void checkLogin(HttpServletRequest request, HttpServletResponse response)
