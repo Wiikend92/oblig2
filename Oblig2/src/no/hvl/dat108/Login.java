@@ -2,8 +2,6 @@ package no.hvl.dat108;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -2,10 +2,8 @@ package no.hvl.dat108;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
+import java.util.List;
 
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,14 +15,15 @@ import javax.servlet.http.HttpSession;
 public class Handle extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	Singleton varer = Singleton.getInstance();
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		checkLogin(request, response);
 
-		response.setContentType("text/html; charset=UTF-8");
+		response.setContentType("text/html; charset=ISO-8859-1");
 
-		String vare = request.getParameter("vare");
 		PrintWriter writer = response.getWriter();
 
 		writer.println("<!DOCTYPE html>\r\n" + "<html>\r\n" + "<head>\r\n" + "<meta charset=\"UTF-8\">\r\n"
@@ -34,20 +33,13 @@ public class Handle extends HttpServlet {
 				+ "				<input type=\"submit\" value=\"Legg til\" />\r\n"
 				+ "				<input type=\"text\" name=\"vare\" />\r\n" + "			</p>\r\n" + "	</form>");
 
-		HttpSession sesjon = request.getSession(false);
-		if (sesjon != null) {
-			Enumeration<String> attributes = sesjon.getAttributeNames();
-			while (attributes.hasMoreElements()) {
-				String attribute = (String) attributes.nextElement();
-				if (!(attribute.equals("login"))) {
-					writer.println("<form action='handle' method='post'>");
-					writer.print("<input type='hidden' value='" + attribute + "' name='slett' />");
-					writer.print("<p><input type='submit' value='Slett' />");
-					writer.println(request.getSession().getAttribute(attribute) + "</p>");
-					writer.println("</form>");
-
-				}
-			}
+		List<String> items = varer.getVarer();
+		for (String item : items) {
+			writer.println("<form action='handle' method='post'>");
+			writer.print("<input type='hidden' value='" + item + "' name='slett' />");
+			writer.print("<p><input type='submit' value='Slett' />");
+			writer.println(item + "</p>");
+			writer.println("</form>");
 		}
 
 		// writer.println("<p><input type='button'
@@ -59,22 +51,23 @@ public class Handle extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		checkLogin(request, response);
-
 		HttpSession sesjon = request.getSession(false);
 		String slett = request.getParameter("slett");
 		String vare = request.getParameter("vare");
 
 		if (sesjon != null) {
 			if (vare != null) {
-				sesjon.setAttribute(vare, vare);
+				if (!(vare.equals(""))) {
+					varer.addItem(vare);
+				}
 			}
 
 			if (slett != null) {
-				sesjon.removeAttribute(slett);
+				varer.deleteItem(slett);
 			}
 			response.sendRedirect("handle");
 		}
-		
+
 	}
 
 	protected void checkLogin(HttpServletRequest request, HttpServletResponse response)
