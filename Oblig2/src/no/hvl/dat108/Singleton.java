@@ -16,15 +16,15 @@ public class Singleton {
 		return single_instance;
 	}
 
-	public synchronized void addItem(String item) {
+	public void addItem(String item) {
 		varer.add(item);
 	}
 
-	public synchronized void deleteItem(String item) {
+	public void deleteItem(String item) {
 		varer.remove(item);
 	}
 
-	public synchronized List<String> getVarer() {
+	public List<String> getVarer() {
 		return varer;
 	}
 
