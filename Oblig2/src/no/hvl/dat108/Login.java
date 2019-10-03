@@ -1,9 +1,8 @@
 package no.hvl.dat108;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Enumeration;
 
+import java.io.PrintWriter;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,11 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 @WebServlet(name = "Login", urlPatterns = { "/login" })
 public class Login extends HttpServlet {
 
-	String passord;
-	int timeout;
+	private String passord;
+	private int timeout;
 
 	private static final long serialVersionUID = 1L;
 
@@ -50,7 +50,7 @@ public class Login extends HttpServlet {
 				writer.println("<p style='color:red'>Passordet du skrev inn var feil. Prøv igjen:</p>");
 			}
 		} else {
-			writer.println("				<label for=\"passwordField\">Skriv inn passord:</label>\r\n");
+			writer.println("<label for=\"passwordField\">Skriv inn passord:</label>\r\n");
 		}
 
 		writer.println("			</p>\r\n" + "			<p>\r\n"
@@ -65,7 +65,6 @@ public class Login extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String pass = request.getParameter("passord");
-
 		if (pass.compareTo(passord) == 0) {
 			logInn(request, response);
 			response.sendRedirect("handle");

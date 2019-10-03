@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,9 +20,8 @@ public class Handle extends HttpServlet {
 			throws ServletException, IOException {
 		checkLogin(request, response);
 
-		response.setContentType("text/html; charset=UTF-8");
+		response.setContentType("text/html; charset=ISO-8859-1");
 
-		String vare = request.getParameter("vare");
 		PrintWriter writer = response.getWriter();
 
 		writer.println("<!DOCTYPE html>\r\n" + "<html>\r\n" + "<head>\r\n" + "<meta charset=\"UTF-8\">\r\n"
@@ -43,7 +40,7 @@ public class Handle extends HttpServlet {
 					writer.println("<form action='handle' method='post'>");
 					writer.print("<input type='hidden' value='" + attribute + "' name='slett' />");
 					writer.print("<p><input type='submit' value='Slett' />");
-					writer.println(request.getSession().getAttribute(attribute) + "</p>");
+					writer.println(sesjon.getAttribute(attribute) + "</p>");
 					writer.println("</form>");
 
 				}
@@ -66,7 +63,9 @@ public class Handle extends HttpServlet {
 
 		if (sesjon != null) {
 			if (vare != null) {
-				sesjon.setAttribute(vare, vare);
+				if (!(vare.equals(""))) {
+					sesjon.setAttribute(vare, vare);
+				}
 			}
 
 			if (slett != null) {
@@ -74,7 +73,7 @@ public class Handle extends HttpServlet {
 			}
 			response.sendRedirect("handle");
 		}
-		
+
 	}
 
 	protected void checkLogin(HttpServletRequest request, HttpServletResponse response)
